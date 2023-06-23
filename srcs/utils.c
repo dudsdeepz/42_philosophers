@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:50:03 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/23 14:29:35 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/06/23 15:50:28 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int ft_atoi(char *str)
 {
     int i = 0;
-    int result;
+    int result = 0;
     int sign = 1;
 
     while (str[i] == ' ' || str[i] == '\t')
@@ -30,7 +30,7 @@ int ft_atoi(char *str)
     while (str[i] >= '0' && str[i] <= '9')
     {
         result = result * 10 + str[i] - '0';
-        i++;
+        ++i;
     }
     return (result * sign);
 }
