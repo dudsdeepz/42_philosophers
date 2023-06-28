@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:35 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/23 15:50:53 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:19:21 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int default_times(t_status *status, char **av)
         status->time_to_sleep = ft_atoi(av[4]);
     else 
         return (0);
+    status->number_of_times_each_philosopher_must_eat = -1;
     if (av[5])
     {
         if (check_digit(av[5]))
