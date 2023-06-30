@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/30 15:40:23 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:33:12 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_status{
     int      number_of_times_each_philosopher_must_eat;
     int      is_dead;
     int      is_full;
-    int      starting_time;
     t_philo  *philo;
+    int      starting_time;
 }   t_status;
 
 void    forks(t_status *status, int stats);
@@ -54,10 +54,10 @@ void    eating(t_status *status);
 void    sleeping(t_status *status);
 time_t  gettime(void);
 void    wait(t_status *status, int time);
-void*   ft_philo(void *statuss);
+void   ft_philo(t_status *status);
 void    init_philo(t_status *status);
 void    print_action(t_status *status, char *str);
-void init_mutex(t_status *status);
-void free_all(t_status *status);
+void    init_mutex(t_status *status);
+void    free_all(t_status *status);
 
 #endif  

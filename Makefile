@@ -6,7 +6,7 @@
 #    By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:40:40 by eduarodr          #+#    #+#              #
-#    Updated: 2023/06/30 10:58:00 by eduarodr         ###   ########.fr        #
+#    Updated: 2023/06/30 16:21:27 by eduarodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ RM = rm -f
 SOURCES = main.c \
 		srcs/utils.c\
 		srcs/philo.c\
+		srcs/init_philo.c\
 
 OBJECTS = $(SOURCES:.c=.o)
 

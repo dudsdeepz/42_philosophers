@@ -6,42 +6,19 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:35:39 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/30 15:41:36 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:33:54 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void* ft_philo(void *statuss)
+void ft_philo(t_status *status)
 {
-    t_status *status;
-    
-    status = (t_status *)statuss;
-    printf("philosopher: %i\n", status->philo->num);
-    // while (1)
-    // {
-    //     printf("%i\n", status->philo->num);
-    //     forks(status, 1);
-    //     eating(statatutus);
-    //     forks(status, 0);
-    //     sleeping(status);
-    // }
-    return (0);
-}
 
-void philo (t_status *status)
-{   
-    int i;
-    
-    i = 0;
-    init_mutex(status);
-    init_philo(status);
-    while(++i < status->number_of_philosophers)
+    while (1)
     {
-        if (pthread_join(status->philo[i].philosophers, NULL))
-            return ;
+        printf("%i\n", status->philo->num);
     }
-    free_all(status);
 }
 
 void eating(t_status *status)
@@ -109,21 +86,6 @@ time_t gettime(void)
     return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 }
 
-void init_philo(t_status *status)
-{
-    int i;
-
-    i = 0;
-    status->starting_time = gettime();
-    status->is_dead = 0;
-    status->is_full = 0;
-    while (++i <= status->number_of_philosophers)
-    {
-        if(pthread_create(&status->philo[i].philosophers, NULL, ft_philo, &status->philo[i]))
-            return ;
-    }
-}
-
 void print_action(t_status *status, char *str)
 {
     int time;
@@ -140,29 +102,6 @@ void print_action(t_status *status, char *str)
     pthread_mutex_unlock(status->philo->life);
     pthread_mutex_unlock(status->philo->food);
     printf("%s%i %s%i %s %s\n", YELLOW, time, RED, status->philo->num, DEFAULT, str);
-}
-
-void init_mutex(t_status *status)
-{
-    int i;
-
-    i = 0;
-    status->philo = malloc(sizeof(t_philo) * status->number_of_philosophers);
-    status->philo->food = malloc(sizeof(pthread_mutex_t));
-    status->philo->life = malloc(sizeof(pthread_mutex_t));
-    if (!status->philo->food || !status->philo->life 
-        || pthread_mutex_init(status->philo->life, NULL) 
-        || pthread_mutex_init(status->philo->food, NULL))
-            return ;
-    while (++i < status->number_of_philosophers)
-    {
-        status->philo[i].num = i + 1;
-        status->philo[i].fork = malloc(sizeof(pthread_mutex_t));
-        if (!status->philo[i].fork)
-            return ;
-        if(pthread_mutex_init(status->philo[i].fork, NULL))
-            return ;
-    }
 }
 
 void free_all(t_status *status)
