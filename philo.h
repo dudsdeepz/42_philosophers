@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/28 15:52:34 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:40:23 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@
 # define BLUE "\e[4;34m"
 
 typedef struct s_philo{
+    int             num;
     pthread_mutex_t *fork;
     int             eat_count;
+    pthread_t       philosophers;
+    pthread_mutex_t *food;
+    pthread_mutex_t *life;
 }   t_philo;
 
 typedef struct s_status{
-    int      philosophers;
     int      number_of_philosophers;
     double   time_to_die;
     double   time_to_eat;
@@ -38,19 +41,23 @@ typedef struct s_status{
     int      number_of_times_each_philosopher_must_eat;
     int      is_dead;
     int      is_full;
-    pthread_mutex_t *food;
-    pthread_mutex_t *life;
+    int      starting_time;
     t_philo  *philo;
-    pthread_t *philos;
 }   t_status;
 
-void forks(t_status *status, int stats);
-int default_times(t_status *status, char **av);
-int ft_atoi(char *str);
-int check_digit(char *str);
-void philo (t_status status);
-void eating(t_status *status);
-void sleeping(t_status *status);
-time_t gettime(void);
+void    forks(t_status *status, int stats);
+int     default_times(t_status *status, char **av);
+int     ft_atoi(char *str);
+int     check_digit(char *str);
+void    philo (t_status *status);
+void    eating(t_status *status);
+void    sleeping(t_status *status);
+time_t  gettime(void);
+void    wait(t_status *status, int time);
+void*   ft_philo(void *statuss);
+void    init_philo(t_status *status);
+void    print_action(t_status *status, char *str);
+void init_mutex(t_status *status);
+void free_all(t_status *status);
 
 #endif  
