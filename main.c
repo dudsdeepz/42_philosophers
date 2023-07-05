@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:35 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/30 11:07:19 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:56:50 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int main (int ac, char **av)
 {
-    t_status *status;
+    t_status status;
 
-    status = malloc(sizeof(t_status));
 	if (ac < 5 || ac < 2 || ac > 6)
     {
         printf("%s./pipex %s[%snum of philosophers%s]%s", RED, GREEN, YELLOW, GREEN, DEFAULT);
@@ -26,8 +25,8 @@ int main (int ac, char **av)
         printf("%s[%snumber of times each philosopher must eat%s]%s\n", GREEN, YELLOW, GREEN,DEFAULT);
         return (0);
     }
-    if (default_times(status, av))
-        philo(status);
+    if (default_times(&status, av))
+        philo(&status);
     else
         return (printf("\033[1;31mError not a number!\033[1;0m\n"));
 }

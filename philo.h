@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/30 16:33:12 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:22:17 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 # define RED "\033[1;31m"
 # define GREEN "\e[4;32m"
@@ -26,11 +27,14 @@
 
 typedef struct s_philo{
     int             num;
-    pthread_mutex_t *fork;
+    pthread_mutex_t fork_right;
+	pthread_mutex_t *fork_left;
     int             eat_count;
     pthread_t       philosophers;
-    pthread_mutex_t *food;
-    pthread_mutex_t *life;
+    pthread_mutex_t food;
+    pthread_mutex_t life;
+    pthread_mutex_t action;
+    time_t   last_meal;
 }   t_philo;
 
 typedef struct s_status{
@@ -59,5 +63,6 @@ void    init_philo(t_status *status);
 void    print_action(t_status *status, char *str);
 void    init_mutex(t_status *status);
 void    free_all(t_status *status);
+void end_join(t_status *status);
 
-#endif  
+#endif
