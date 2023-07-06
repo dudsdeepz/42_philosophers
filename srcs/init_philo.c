@@ -6,70 +6,71 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:20:22 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/05 15:26:26 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 13:45:52 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void philo (t_status *status)
+void philo (t_all *all, t_status *status, t_philo *philo)
 {
-    init_mutex(status);
-    init_philo(status);
+	all->philo = philo;
+	all->status = status;
+    init_mutex(all);
+    init_philo(all);
 }
 
-void init_philo(t_status *status)
-{
-    int i;
-
-    i = -1;
-    status->starting_time = gettime();
-    status->philo->last_meal = gettime();
-    while (++i < status->number_of_philosophers)
-    {
-        if(pthread_create(&status->philo[i].philosophers, NULL, (void *)ft_philo, &status->philo[i]))
-            return ;
-        if (status->is_dead)
-            end_join(status);
-    }
-}
-
-void init_mutex(t_status *status)
+void init_philo(t_all *all)
 {
     int i;
 
     i = -1;
-    status->philo = malloc(sizeof(t_philo) * status->number_of_philosophers);
-    if (pthread_mutex_init(&status->philo->life, NULL)
-        || pthread_mutex_init(&status->philo->food, NULL)
-        || pthread_mutex_init(&status->philo->action, NULL))
-            return ;
-    while (++i < status->number_of_philosophers)
+	all->philo->status->starting_time = gettime();
+    while (++i < all->status->number_of_philosophers)
     {
-        status->philo->eat_count = 0;
-        status->philo[i].num = i + 1;
-        if(pthread_mutex_init(&status->philo[i].fork_right, NULL))
+        if(pthread_create(&all->philo[i].philosophers, NULL, (void *)ft_philo, &all->philo[i]))
             return ;
-        if(i != 0)
-	    	status->philo[i].fork_left  = &status->philo[i - 1].fork_right;
-        else if (i == 0)
-            status->philo[i].fork_left  = &status->philo[status->number_of_philosophers - 1].fork_right;
+        // if (status->is_dead)
+        //     end_join(status);
     }
 }
 
-void end_join(t_status *status)
+void init_mutex(t_all *all)
+{
+    int i;
+
+    i = 0;
+    all->philo = malloc(sizeof(t_philo) * all->status->number_of_philosophers);
+    if (pthread_mutex_init(&all->philo->life, NULL)
+        || pthread_mutex_init(&all->philo->food, NULL))
+            return ;
+    while (i < all->status->number_of_philosophers)
+    {
+        all->philo[i].eat_count = 0;
+        all->philo[i].last_meal = 0;
+        all->philo[i].num = i + 1;
+        all->philo[i].status = all->status;
+        if(pthread_mutex_init(&all->philo[i].fork_right, NULL))
+            return ;
+        if (i == 0)
+            all->philo[i].fork_left  = &all->philo[all->status->number_of_philosophers - 1].fork_right;
+        else
+		{
+	    	all->philo[i].fork_left  = &all->philo[i - 1].fork_right;
+		}
+		i++;
+	}
+}
+
+void end_join(t_all *all)
 {
     int i = -1;
-    
-    if (status->philo->philosophers)
+
+    if (all->philo->philosophers)
     {
-        while (++i < status->number_of_philosophers)
-            pthread_join(status->philo[i].philosophers, NULL);
+        while (++i < all->status->number_of_philosophers)
+            pthread_join(all->philo[i].philosophers, NULL);
     }
-    free(&(status->philo->action));
-    free(&(status->philo->life));
-    free(&(status->philo->fork_right));
-    free(&(status->philo->food));
-    free(status->philo);
-    status->philo = NULL;
+    free(all->philo);
+    all->philo = NULL;
 }

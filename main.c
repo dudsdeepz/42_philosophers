@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:35 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/05 11:56:50 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:36:13 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 int main (int ac, char **av)
 {
     t_status status;
+	t_all	all;
+	t_philo philos;
 
-	if (ac < 5 || ac < 2 || ac > 6)
+	if (ac < 5 || ac > 6)
     {
         printf("%s./pipex %s[%snum of philosophers%s]%s", RED, GREEN, YELLOW, GREEN, DEFAULT);
         printf("%s[%stime to die%s]%s", GREEN, YELLOW, GREEN,DEFAULT);
@@ -26,7 +28,7 @@ int main (int ac, char **av)
         return (0);
     }
     if (default_times(&status, av))
-        philo(&status);
+        philo(&all, &status, &philos);
     else
         return (printf("\033[1;31mError not a number!\033[1;0m\n"));
 }
@@ -39,22 +41,22 @@ int default_times(t_status *status, char **av)
         return (0);
     if (check_digit(av[2]))
         status->time_to_die = ft_atoi(av[2]);
-    else 
+    else
         return (0);
     if (check_digit(av[3]))
         status->time_to_eat = ft_atoi(av[3]);
-    else 
+    else
         return (0);
     if (check_digit(av[4]))
         status->time_to_sleep = ft_atoi(av[4]);
-    else 
-        return (0);
-    status->number_of_times_each_philosopher_must_eat = -1;
+    else
+    return (0);
+   	status->number_of_times_each_philosopher_must_eat = -1;
     if (av[5])
     {
         if (check_digit(av[5]))
             status->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
-        else 
+        else
             return (0);
     }
     return (1);
