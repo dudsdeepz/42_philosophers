@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:20:22 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 16:29:02 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 20:21:49 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void init_mutex(t_all *all)
         all->philo[i].last_meal = gettime();
         all->philo[i].num = i + 1;
         all->philo[i].status = all->status;
+		all->philo[i].is_dead = 0;
         if(pthread_mutex_init(&all->philo[i].fork_right, NULL))
             return ;
         if (i == 0)

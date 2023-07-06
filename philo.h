@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 16:25:16 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 20:10:04 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_philo{
     int      is_dead;
     int      is_full;
 	t_status *status;
-    time_t   last_meal;
+    long long int   last_meal;
 }   t_philo;
 
 typedef struct s_all{
@@ -70,5 +70,6 @@ void    print_action(t_philo *philo, char *str);
 void    init_mutex(t_all *all);
 void    free_all(t_philo *philo);
 void 	end_join(t_all *all);
+int check_dead(t_philo *philo);
 
 #endif
