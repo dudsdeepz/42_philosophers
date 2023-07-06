@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 12:13:31 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:25:16 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_status{
     double   time_to_eat;
     double   time_to_sleep;
     int      number_of_times_each_philosopher_must_eat;
-    time_t   starting_time;
+    long long  starting_time;
 }   t_status;
 
 typedef struct s_philo{
@@ -62,7 +62,7 @@ int     check_digit(char *str);
 void    philo (t_all *all, t_status *status, t_philo *philo);
 void    eating(t_philo *philo);
 void    sleeping(t_philo *philo);
-time_t  gettime(void);
+long long  gettime(void);
 void    wait(t_philo *philo, time_t time);
 void    ft_philo(t_philo *philo);
 void    init_philo(t_all *all);

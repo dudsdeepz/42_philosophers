@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:35 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 11:36:13 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:01:28 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int main (int ac, char **av)
 
 int default_times(t_status *status, char **av)
 {
+    status->starting_time = gettime();
     if (check_digit(av[1]))
         status->number_of_philosophers = ft_atoi(av[1]);
     else

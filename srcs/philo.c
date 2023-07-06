@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:35:39 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 13:50:03 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:57:00 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,20 @@
 
 void ft_philo(t_philo *philo)
 {
-    (void)philo;
-    gettime();
-	// while (1)
-	// {
-        // usleep(100);
-        // pthread_mutex_lock(&philo->life);
-        // if (philo->is_dead)
-        // {
-        //     pthread_mutex_unlock(&philo->life);
-        //     return ;
-        // }
-        // pthread_mutex_unlock(&philo->life);
-		// forks(philo, 1);
-		// eating(philo);
-		// forks(philo, 0);
-		// sleeping(philo);
-	// }
+	while (1)
+	{
+        pthread_mutex_lock(&philo->life);
+        if (philo->is_dead)
+        {
+            pthread_mutex_unlock(&philo->life);
+            return ;
+        }
+        pthread_mutex_unlock(&philo->life);
+		forks(philo, 1);
+		eating(philo);
+		forks(philo, 0);
+		sleeping(philo);
+	}
 	return ;
 }
 
@@ -79,6 +76,7 @@ void wait(t_philo *philo, time_t time)
     time_t current;
 
     start = gettime();
+    usleep(time);
     while (1)
     {
         pthread_mutex_lock(&philo->life);
@@ -89,15 +87,15 @@ void wait(t_philo *philo, time_t time)
         }
         pthread_mutex_unlock(&philo->life);
         current = gettime();
-        usleep(100);
         if (current - start >= time)
             break ;
     }
 }
 
-time_t gettime(void)
+long long gettime(void)
 {
     struct timeval current_time;
+
 
     if (gettimeofday(&current_time, NULL) < 0)
         return (0);
@@ -106,9 +104,6 @@ time_t gettime(void)
 
 void print_action(t_philo *philo, char *str)
 {
-    int time;
-
-    time = gettime() - philo->status->starting_time;
     pthread_mutex_lock(&philo->life);
     if (philo->is_dead)
     {
@@ -116,7 +111,8 @@ void print_action(t_philo *philo, char *str)
         return ;
     }
     pthread_mutex_unlock(&philo->life);
-    printf("%s%i %s%i %s %s\n", YELLOW, time, RED, philo->num, DEFAULT, str);
+    printf("%s%lli %s%i %s %s\n", YELLOW, (gettime() - philo->status->starting_time)
+    , RED, philo->num, DEFAULT, str);
 }
 
 void free_all(t_philo *philo)
@@ -126,10 +122,7 @@ void free_all(t_philo *philo)
     i = -1;
     while (++i < philo->status->number_of_philosophers)
     {
-        if (&(philo[i].fork_right))
-        {
             pthread_mutex_destroy(&philo[i].fork_right);
-        }
     }
     pthread_mutex_destroy(&philo->food);
     pthread_mutex_destroy(&philo->life);
