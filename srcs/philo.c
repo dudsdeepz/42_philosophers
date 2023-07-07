@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:35:39 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 20:21:58 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:19:45 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void ft_philo(t_philo *philo)
 {
+    
 	if (philo->status->number_of_philosophers == 1)
 	{
 		print_action(philo, "has taken a fork");
@@ -22,53 +23,68 @@ void ft_philo(t_philo *philo)
 	}
 	while (1)
 	{
-        if (check_dead(philo))
-            break ;
-		forks(philo, 1);
-		eating(philo);
-		forks(philo, 0);
-		sleeping(philo);
+		if (forks(philo, 1))
+            return ;
+		if (eating(philo))
+            return ;
+		if (forks(philo, 0))
+            return ;
+	    if (sleeping(philo))
+            return ;
 	}
 	return ;
 }
 
-void eating(t_philo *philo)
+int eating(t_philo *philo)
 {
-	if (check_dead(philo))
-		return ;
+    if (check_dead(philo))
+        return (1);
     print_action(philo, "is eating");
     pthread_mutex_lock(&philo->food);
-    philo->last_meal = gettime() - philo->status->starting_time;
+    philo->last_meal = gettime();
     philo->eat_count++;
     pthread_mutex_unlock(&philo->food);
     wait(philo, philo->status->time_to_eat);
+    return (0);
 }
-void sleeping(t_philo *philo)
+int sleeping(t_philo *philo)
 {
-	if (check_dead(philo))
-		return ;
+    if (check_dead(philo))
+        return (1);
     print_action(philo, "is sleeping");
     wait(philo, philo->status->time_to_sleep);
     print_action(philo, "is thinking");
+    return (0);
 }
 
 
-void forks(t_philo *philo, int stats)
+int forks(t_philo *philo, int stats)
 {
-	if (check_dead(philo))
-		return ;
+    if (check_dead(philo))
+        return (1);
     if (stats)
-    {
-        pthread_mutex_lock(&philo->fork_right);
-        print_action(philo, "has taken a fork");
-        pthread_mutex_lock(philo->fork_left);
-		print_action(philo, "has taken a fork");
+    {  
+        if (philo->num % 2 == 0)
+        {
+            pthread_mutex_lock(&philo->fork_right);
+            print_action(philo, "has taken a fork");
+            pthread_mutex_lock(philo->fork_left);
+            print_action(philo, "has taken a fork");
+        }
+        else
+        {
+            pthread_mutex_lock(philo->fork_left);
+            print_action(philo, "has taken a fork");
+            pthread_mutex_lock(&philo->fork_right);
+            print_action(philo, "has taken a fork");
+        }
     }
     else if (!stats)
     {
         pthread_mutex_unlock(&philo->fork_right);
 		pthread_mutex_unlock(philo->fork_left);
     }
+    return (0);
 }
 
 void wait(t_philo *philo, time_t time)
@@ -80,8 +96,13 @@ void wait(t_philo *philo, time_t time)
     usleep(time);
     while (1)
     {
-        if (check_dead(philo))
-            return ;
+		pthread_mutex_lock(&philo->life);
+		if (philo->is_dead)
+		{
+			pthread_mutex_unlock(&philo->life);
+			return ;
+		}
+		pthread_mutex_unlock(&philo->life);
         current = gettime();
         if (current - start >= time)
             break ;
@@ -92,7 +113,6 @@ long long gettime(void)
 {
     struct timeval current_time;
 
-
     if (gettimeofday(&current_time, NULL) < 0)
         return (0);
     return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
@@ -100,10 +120,11 @@ long long gettime(void)
 
 void print_action(t_philo *philo, char *str)
 {
-    if (check_dead(philo))
-        return ;
+    check_dead(philo);
+    pthread_mutex_lock(&philo->life);
     printf("%s%lli %s%i %s %s\n", YELLOW, (gettime() - philo->status->starting_time)
     , RED, philo->num, DEFAULT, str);
+    pthread_mutex_unlock(&philo->life);
 }
 
 void free_all(t_philo *philo)
@@ -125,17 +146,14 @@ void free_all(t_philo *philo)
 int check_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->life);
-	if (philo->is_dead)
+    if(gettime() - philo->last_meal >= philo->status->time_to_die)    
 	{
-		pthread_mutex_unlock(&philo->life);
-		return (philo->is_dead);
+		philo->is_dead = 1;
+		printf("%s%lli %s%i %s %s\n", YELLOW, (gettime() - philo->status->starting_time)
+    	, RED, philo->num, DEFAULT, "is dead");
+        pthread_mutex_unlock(&philo->life);
+        return (philo->is_dead);
 	}
-	if((gettime() - philo->status->starting_time) >= philo->status->time_to_die)
-		{
-				philo->is_dead = 1;
-				printf("%s%lli %s%i %s %s\n", YELLOW, (gettime() - philo->status->starting_time)
-    			, RED, philo->num, DEFAULT, "is dead");
-		}
 	pthread_mutex_unlock(&philo->life);
 	return (philo->is_dead);
 }

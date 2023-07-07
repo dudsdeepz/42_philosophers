@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:43 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 20:10:04 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:04:41 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@
 
 typedef struct s_status{
     int      number_of_philosophers;
-    double   time_to_die;
-    double   time_to_eat;
-    double   time_to_sleep;
+    int      time_to_die;
+    int      time_to_eat;
+    int      time_to_sleep;
     int      number_of_times_each_philosopher_must_eat;
-    long long  starting_time;
+    time_t   starting_time;
 }   t_status;
 
 typedef struct s_philo{
@@ -46,7 +46,7 @@ typedef struct s_philo{
     int      is_dead;
     int      is_full;
 	t_status *status;
-    long long int   last_meal;
+    time_t    last_meal;
 }   t_philo;
 
 typedef struct s_all{
@@ -55,13 +55,13 @@ typedef struct s_all{
 	t_philo *philo;
 }	t_all;
 
-void    forks(t_philo *philo, int stats);
+int     forks(t_philo *philo, int stats);
 int     default_times(t_status *status, char **av);
 int     ft_atoi(char *str);
 int     check_digit(char *str);
 void    philo (t_all *all, t_status *status, t_philo *philo);
-void    eating(t_philo *philo);
-void    sleeping(t_philo *philo);
+int     eating(t_philo *philo);
+int     sleeping(t_philo *philo);
 long long  gettime(void);
 void    wait(t_philo *philo, time_t time);
 void    ft_philo(t_philo *philo);
@@ -70,6 +70,6 @@ void    print_action(t_philo *philo, char *str);
 void    init_mutex(t_all *all);
 void    free_all(t_philo *philo);
 void 	end_join(t_all *all);
-int check_dead(t_philo *philo);
+int 	check_dead(t_philo *philo);
 
 #endif

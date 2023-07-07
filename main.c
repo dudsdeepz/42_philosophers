@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:40:35 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 16:01:28 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:46:04 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main (int ac, char **av)
 
 	if (ac < 5 || ac > 6)
     {
-        printf("%s./pipex %s[%snum of philosophers%s]%s", RED, GREEN, YELLOW, GREEN, DEFAULT);
+        printf("%s./philo %s[%snum of philosophers%s]%s", RED, GREEN, YELLOW, GREEN, DEFAULT);
         printf("%s[%stime to die%s]%s", GREEN, YELLOW, GREEN,DEFAULT);
         printf("%s[%stime to eat%s]%s", GREEN, YELLOW, GREEN,DEFAULT);
         printf("%s[%stime to sleep%s]%s", GREEN, YELLOW, GREEN,DEFAULT);
@@ -50,8 +50,9 @@ int default_times(t_status *status, char **av)
         return (0);
     if (check_digit(av[4]))
         status->time_to_sleep = ft_atoi(av[4]);
-    else
-    return (0);
+    else {
+        return (0);
+    }
    	status->number_of_times_each_philosopher_must_eat = -1;
     if (av[5])
     {

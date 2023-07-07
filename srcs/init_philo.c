@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:20:22 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/06 20:21:49 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:48:07 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void init_philo(t_all *all)
     int i;
 
     i = -1;
-    all->philo->status->starting_time = gettime();
     while (++i < all->status->number_of_philosophers)
     {
         if(pthread_create(&all->philo[i].philosophers, NULL, (void *)ft_philo, &all->philo[i]))
@@ -50,6 +49,7 @@ void init_mutex(t_all *all)
         all->philo[i].num = i + 1;
         all->philo[i].status = all->status;
 		all->philo[i].is_dead = 0;
+		all->philo[i].status->starting_time = gettime();
         if(pthread_mutex_init(&all->philo[i].fork_right, NULL))
             return ;
         if (i == 0)
