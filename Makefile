@@ -6,7 +6,7 @@
 #    By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:40:40 by eduarodr          #+#    #+#              #
-#    Updated: 2023/07/07 15:43:32 by eduarodr         ###   ########.fr        #
+#    Updated: 2023/07/12 17:35:33 by eduarodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SOURCES = main.c \
 		srcs/utils.c\
 		srcs/philo.c\
 		srcs/init_philo.c\
+		srcs/checker.c\
 
 OBJECTS = $(SOURCES:.c=.o)
 

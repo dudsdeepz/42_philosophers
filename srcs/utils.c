@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:50:03 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/06/23 15:50:28 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:40:16 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,29 @@ int check_digit(char *str)
             return (0);
     }
     return (1);
+}
+
+t_status   *status(void)
+{
+    static t_status status;
+    
+    return (&status);
+}
+
+long long gettime(void)
+{
+    struct timeval current_time;
+
+    if (gettimeofday(&current_time, NULL) < 0)
+        return (0);
+    return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+}
+
+void print_action(t_philo *philo, char *str)
+{
+    if(check_things())
+        return ;
+    printf("%s%lli %s%i %s %s\n", YELLOW, (gettime() - status()->starting_time)
+    , RED, philo->num, DEFAULT, str);
+    return;
 }
