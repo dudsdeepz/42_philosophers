@@ -6,7 +6,7 @@
 #    By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/07 15:40:40 by eduarodr          #+#    #+#              #
-#    Updated: 2023/07/12 17:35:33 by eduarodr         ###   ########.fr        #
+#    Updated: 2023/07/20 16:22:35 by eduarodr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread -g
+CFLAGS = -Wall -Wextra -Werror -pthread  -g -fsanitize=thread
 
 RM = rm -f
 
