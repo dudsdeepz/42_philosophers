@@ -6,7 +6,7 @@
 /*   By: eduarodr <eduarodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 14:35:39 by eduarodr          #+#    #+#             */
-/*   Updated: 2023/07/20 16:23:49 by eduarodr         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:45:01 by eduarodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,16 @@ void	wait(t_philo *philo, time_t time)
 
 int check_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->fork_right.fork_lock);
-	pthread_mutex_lock(&philo->fork_left->fork_lock);
+	if (philo->num % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->fork_right.fork_lock);
+		pthread_mutex_lock(&philo->fork_left->fork_lock);
+	}
+	else
+	{		
+		pthread_mutex_lock(&philo->fork_left->fork_lock);
+		pthread_mutex_lock(&philo->fork_right.fork_lock);
+	}
 	if (philo->fork_left->fork_take == 0 && philo->fork_right.fork_take == 0)
 	{
 		pthread_mutex_unlock(&philo->fork_right.fork_lock);
